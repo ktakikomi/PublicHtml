@@ -1,10 +1,27 @@
 <html>
 	<head>
+		<link rel="stylesheet" type="text/css" href="css/common.css" /> 
 		<title>test1.html表示テスト</title>
 	</head>
 	<body>
+		<h1>H1タグ表示</h1>
 		<div>
-			<p>ここに本文を書いておく。</p>
+			<p class="red">ここに本文を書いておく。</p>
 		</div>
 	</body>
+	<script>
+    const secretCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    let inputHistory = [];
+
+    document.addEventListener('keydown', function(event) {
+      inputHistory.push(event.key);
+      if (inputHistory.length > secretCode.length) {
+        inputHistory.shift(); // 一番古いキーを削除
+      }
+
+      if (JSON.stringify(inputHistory) === JSON.stringify(secretCode)) {
+        window.location.href = "test2.html"; // 隠しページに遷移
+      }
+    });
+	</script>
 </html>
