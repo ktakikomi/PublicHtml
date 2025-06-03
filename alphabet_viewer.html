@@ -131,8 +131,8 @@
             imageContainer.innerHTML = ''; // コンテナをクリア
 
             for (const char of inputText) {
-                // アルファベット (a-z) または数字 (0-9) の場合
-                if ((char >= 'a' && char <= 'z') || (char >= '0' && char <= '9')) {
+                // アルファベット (a-z) または数字 (1-9) の場合
+                if ((char >= 'a' && char <= 'z') || (char >= '1' && char <= '9')) {
                     const imageUrl = `img/AncientAlphabet/${char}.png`; // 画像パス
                     const imageWrapper = document.createElement('div');
                     imageWrapper.classList.add('imageWrapper');
