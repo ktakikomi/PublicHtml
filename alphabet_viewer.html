@@ -93,10 +93,17 @@
         }
         .invalid {
             display: inline-block;
-            color: red;
-            font-size: 0.8em;
-            margin-right: 10px;
+            color: red; /* 文字を赤くする */
+            font-size: 24px; /* テキストエリアの文字サイズに合わせる */
+            font-weight: bold; /* 少し強調 */
+            /* width: 50px; */ /* ★画像の実際のサイズに合わせて調整してください */
+            height: 50px; /* 画像と同じ高さ */
+            text-align: center; /* 中央寄せ */
+            line-height: 50px; /* 垂直方向の中央寄せ */
             vertical-align: top;
+            margin-right: 2px;
+            margin-left: 2px;
+            box-sizing: border-box;
         }
     </style>
 </head>
@@ -144,7 +151,7 @@
                     // アルファベット、数字、スペース、改行以外の無効な文字の場合
                     const invalidCharSpan = document.createElement('span');
                     invalidCharSpan.classList.add('invalid');
-                    invalidCharSpan.textContent = `'${char}' は無効な文字です`;
+                    invalidCharSpan.textContent = char; // その文字自体を表示
                     imageContainer.appendChild(invalidCharSpan);
                 }
             }
