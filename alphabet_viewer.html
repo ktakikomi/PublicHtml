@@ -192,7 +192,7 @@
                 const lowerChar = char.toLowerCase();
 
                 let shouldShowOriginalChar = showOriginal;
-                if (!((lowerChar >= 'a' && lowerChar <= 'z') || (lowerChar >= '0' && lowerChar <= '9') ||
+                if (!((lowerChar >= 'a' && lowerChar <= 'z') || (lowerChar >= '1' && lowerChar <= '9') ||
                     char === ' ' || char === '\u3000' || specialCharacters.includes(char))) {
                     shouldShowOriginalChar = false;
                 }
@@ -208,7 +208,7 @@
                     charWrapper.appendChild(placeholder);
                 }
                 
-                if ((lowerChar >= 'a' && lowerChar <= 'z') || (lowerChar >= '0' && lowerChar <= '9')) {
+                if ((lowerChar >= 'a' && lowerChar <= 'z') || (lowerChar >= '1' && lowerChar <= '9')) {
                     const imageUrl = `img/AncientAlphabet/${lowerChar}.png`;
                     const imageElement = document.createElement('div');
                     imageElement.classList.add('imageWrapper');
