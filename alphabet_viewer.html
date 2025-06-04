@@ -59,75 +59,100 @@
             white-space: nowrap;
         }
         #imageContainer {
-            display: block;
+            display: flex;
+            flex-wrap: wrap;
             max-width: 90%;
             background-color: #fff;
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            word-wrap: break-word;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+        .char-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* 行間を詰めるため、margin-bottomを調整 */
+            margin: 0 2px 0 2px; /* 左右2px、上下0に調整 */
+            box-sizing: border-box;
+        }
+        .original-char {
+            font-size: 12px;
+            color: #555;
+            margin-bottom: 0px; /* 余白を詰める */
+            height: 16px;
+            line-height: 16px;
+        }
+        .original-char.hidden {
+            display: none;
         }
         .imageWrapper {
-            display: inline-block;
-            /* width: 50px; */ /* ★画像の実際のサイズに合わせて調整してください */
-            height: 50px; /* ★画像の実際のサイズに合わせて調整してください */
+            /* widthは削除し、heightのみを指定 */
+            height: 50px; /* ★画像の高さを50pxに固定 */
             border: 0px solid #ddd;
-            vertical-align: top;
-            margin-right: 2px;
-            /* margin-left: 2px; */
-            margin-bottom: 0px;
             overflow: hidden;
             box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .imageWrapper img {
             display: block;
-            width: 100%;
-            height: 100%;
+            /* widthは自動調整 (auto) に設定 */
+            height: 100%; /* 親要素の高さに合わせる */
             object-fit: contain;
         }
         .space-char {
-            display: inline-block;
-            width: 25px;
+            display: block;
+            /* widthを画像と同程度に調整 */
+            width: auto; /* widthをautoに変更 */
             height: 50px; /* 画像の高さに合わせる */
-            vertical-align: top;
+            line-height: 50px;
+            text-align: center;
+            min-width: 20px; /* 適切な最小幅を設定 */
         }
-        .special-char { /* 新しいクラス: 特殊文字用 */
-            display: inline-block;
-            color: black; /* 黒字で表示 */
+        .special-char, .invalid {
+            display: block;
             font-size: 24px;
             font-weight: bold;
-            /* width: 50px; */ /* 画像と同じ幅 */
-            height: 50px; /* 画像と同じ高さ */
+            /* widthをautoに変更し、min-widthで調整 */
+            width: auto; /* widthをautoに変更 */
+            height: 50px;
             text-align: center;
-            line-height: 50px; /* 垂直方向の中央寄せ */
-            vertical-align: top;
-            margin-right: 2px;
-            margin-left: 2px;
+            line-height: 50px;
             box-sizing: border-box;
         }
+        .special-char {
+            color: black;
+        }
         .invalid {
-            display: inline-block;
-            color: red; /* 文字を赤くする */
-            font-size: 24px; /* テキストエリアの文字サイズに合わせる */
-            font-weight: bold; /* 少し強調 */
-            /* width: 50px; */ /* ★画像の実際のサイズに合わせて調整してください */
-            height: 50px; /* 画像と同じ高さ */
-            text-align: center; /* 中央寄せ */
-            line-height: 50px; /* 垂直方向の中央寄せ */
-            vertical-align: top;
-            margin-right: 2px;
-            margin-left: 2px;
+            color: red;
+        }
+        .invisible-char-placeholder {
+            height: 16px;
+            margin-bottom: 0px; /* 余白を詰める */
             box-sizing: border-box;
+        }
+        .newline {
+            flex-basis: 100%;
+            height: 0; /* 改行の視覚的な高さを0に */
+            margin: 0;
+            padding: 0;
         }
     </style>
 </head>
 <body>
     <h1>古代文字変換ツール</h1>
-    <textarea id="alphabetInput" placeholder="例: abc 123&#10;def"></textarea>
+    <textarea id="alphabetInput" placeholder="例: abc. 123,&#10;def"></textarea>
 
     <div class="controls">
         <button id="generateUrlButton">URLを生成</button>
         <div id="outputUrl">ここに生成されたURLが表示されます</div>
+        <div class="checkbox-container">
+            <input type="checkbox" id="toggleOriginalChar">
+            <label for="toggleOriginalChar">元の文字を表示</label>
+        </div>
     </div>
 
     <div id="imageContainer">
@@ -138,7 +163,7 @@
         const imageContainer = document.getElementById('imageContainer');
         const generateUrlButton = document.getElementById('generateUrlButton');
         const outputUrlDisplay = document.getElementById('outputUrl');
-
+        const toggleOriginalCharCheckbox = document.getElementById('toggleOriginalChar');
         /**
          * 特殊文字を黒字とする場合は、この配列に設定する。
          * 古代文字として入力されているピリオドやカンマを黒字にしようかと思ったが、
@@ -148,65 +173,89 @@
         */
         const specialCharacters = [];
 
-        // 画像表示ロジックを関数化
         function updateImages() {
-            const inputText = alphabetInput.value.toLowerCase(); // アルファベットは小文字に変換
-            imageContainer.innerHTML = ''; // コンテナをクリア
+            const inputText = alphabetInput.value;
+            imageContainer.innerHTML = '';
+            const showOriginal = toggleOriginalCharCheckbox.checked;
 
             for (const char of inputText) {
-                // アルファベット (a-z) または数字 (1-9) の場合
-                if ((char >= 'a' && char <= 'z') || (char >= '1' && char <= '9')) {
-                    const imageUrl = `img/AncientAlphabet/${char}.png`; // 画像パス
-                    const imageWrapper = document.createElement('div');
-                    imageWrapper.classList.add('imageWrapper');
+                if (char === '\n' || char === '\r') {
+                    const newlineElement = document.createElement('div');
+                    newlineElement.classList.add('newline');
+                    imageContainer.appendChild(newlineElement);
+                    continue;
+                }
+
+                const charWrapper = document.createElement('div');
+                charWrapper.classList.add('char-wrapper');
+
+                const lowerChar = char.toLowerCase();
+
+                let shouldShowOriginalChar = showOriginal;
+                if (!((lowerChar >= 'a' && lowerChar <= 'z') || (lowerChar >= '0' && lowerChar <= '9') ||
+                    char === ' ' || char === '\u3000' || specialCharacters.includes(char))) {
+                    shouldShowOriginalChar = false;
+                }
+
+                if (shouldShowOriginalChar) {
+                    const originalCharElement = document.createElement('div');
+                    originalCharElement.classList.add('original-char');
+                    originalCharElement.textContent = char === ' ' ? '\u00A0' : char;
+                    charWrapper.appendChild(originalCharElement);
+                } else {
+                    const placeholder = document.createElement('div');
+                    placeholder.classList.add('invisible-char-placeholder');
+                    charWrapper.appendChild(placeholder);
+                }
+                
+                if ((lowerChar >= 'a' && lowerChar <= 'z') || (lowerChar >= '0' && lowerChar <= '9')) {
+                    const imageUrl = `img/AncientAlphabet/${lowerChar}.png`;
+                    const imageElement = document.createElement('div');
+                    imageElement.classList.add('imageWrapper');
                     const img = document.createElement('img');
                     img.src = imageUrl;
-                    img.alt = char;
-                    imageWrapper.appendChild(img);
-                    imageContainer.appendChild(imageWrapper);
-                } else if (char === ' ' || char === '\u3000') { // 半角スペースまたは全角スペース
+                    img.alt = lowerChar;
+                    imageElement.appendChild(img);
+                    charWrapper.appendChild(imageElement);
+                } else if (char === ' ' || char === '\u3000') {
                     const spaceElement = document.createElement('span');
                     spaceElement.classList.add('space-char');
-                    imageContainer.appendChild(spaceElement);
-                } else if (char === '\n' || char === '\r') { // 改行コード
-                    imageContainer.appendChild(document.createElement('br'));
-                } else if (specialCharacters.includes(char)) { // ★特殊文字の配列に含まれる場合
+                    charWrapper.appendChild(spaceElement);
+                } else if (specialCharacters.includes(char)) {
                     const specialCharSpan = document.createElement('span');
-                    specialCharSpan.classList.add('special-char'); // 新しいクラスを適用
-                    specialCharSpan.textContent = char; // その文字自体を表示
-                    imageContainer.appendChild(specialCharSpan);
+                    specialCharSpan.classList.add('special-char');
+                    specialCharSpan.textContent = char;
+                    charWrapper.appendChild(specialCharSpan);
                 } else {
-                    // アルファベット、数字、スペース、改行以外の無効な文字の場合
                     const invalidCharSpan = document.createElement('span');
                     invalidCharSpan.classList.add('invalid');
-                    invalidCharSpan.textContent = char; // その文字自体を表示
-                    imageContainer.appendChild(invalidCharSpan);
+                    invalidCharSpan.textContent = char;
+                    charWrapper.appendChild(invalidCharSpan);
                 }
+
+                imageContainer.appendChild(charWrapper);
             }
         }
 
-        // テキストエリアへの入力があったら画像を更新
         alphabetInput.addEventListener('input', updateImages);
+        toggleOriginalCharCheckbox.addEventListener('change', updateImages);
 
-        // URL生成ボタンのクリックイベント
         generateUrlButton.addEventListener('click', function() {
             const currentText = alphabetInput.value;
             const encodedText = encodeURIComponent(currentText);
-            // 現在のURLのパス部分を取得
             const baseUrl = window.location.origin + window.location.pathname;
             const generatedUrl = `${baseUrl}?text=${encodedText}`;
             outputUrlDisplay.textContent = generatedUrl;
         });
 
-        // ページ読み込み時にURLパラメータをチェック
         document.addEventListener('DOMContentLoaded', function() {
             const params = new URLSearchParams(window.location.search);
             const textParam = params.get('text');
 
             if (textParam) {
                 alphabetInput.value = decodeURIComponent(textParam);
-                updateImages(); // URLから値を設定後、画像を更新
             }
+            updateImages();
         });
     </script>
 </body>
