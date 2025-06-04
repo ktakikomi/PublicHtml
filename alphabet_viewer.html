@@ -91,6 +91,20 @@
             height: 50px; /* 画像の高さに合わせる */
             vertical-align: top;
         }
+        .special-char { /* 新しいクラス: 特殊文字用 */
+            display: inline-block;
+            color: black; /* 黒字で表示 */
+            font-size: 24px;
+            font-weight: bold;
+            /* width: 50px; */ /* 画像と同じ幅 */
+            height: 50px; /* 画像と同じ高さ */
+            text-align: center;
+            line-height: 50px; /* 垂直方向の中央寄せ */
+            vertical-align: top;
+            margin-right: 2px;
+            margin-left: 2px;
+            box-sizing: border-box;
+        }
         .invalid {
             display: inline-block;
             color: red; /* 文字を赤くする */
@@ -125,6 +139,15 @@
         const generateUrlButton = document.getElementById('generateUrlButton');
         const outputUrlDisplay = document.getElementById('outputUrl');
 
+        /**
+         * 特殊文字を黒字とする場合は、この配列に設定する。
+         * 古代文字として入力されているピリオドやカンマを黒字にしようかと思ったが、
+         * 1とピリオドの区別が付かないので廃止。
+         * 入力文字がそのまま出る場合は赤字とするので、ピリオドもカンマも赤字で出るのを正とする。
+         * const specialCharacters = ['.', ',', '+', '-', '=', '*']; 
+        */
+        const specialCharacters = [];
+
         // 画像表示ロジックを関数化
         function updateImages() {
             const inputText = alphabetInput.value.toLowerCase(); // アルファベットは小文字に変換
@@ -147,6 +170,11 @@
                     imageContainer.appendChild(spaceElement);
                 } else if (char === '\n' || char === '\r') { // 改行コード
                     imageContainer.appendChild(document.createElement('br'));
+                } else if (specialCharacters.includes(char)) { // ★特殊文字の配列に含まれる場合
+                    const specialCharSpan = document.createElement('span');
+                    specialCharSpan.classList.add('special-char'); // 新しいクラスを適用
+                    specialCharSpan.textContent = char; // その文字自体を表示
+                    imageContainer.appendChild(specialCharSpan);
                 } else {
                     // アルファベット、数字、スペース、改行以外の無効な文字の場合
                     const invalidCharSpan = document.createElement('span');
