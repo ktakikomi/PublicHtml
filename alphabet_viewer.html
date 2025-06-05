@@ -47,6 +47,26 @@
         button:hover {
             background-color: #0056b3;
         }
+                .link-button { /* 新しく追加するリンクボタンのスタイル */
+            display: inline-block; /* ボタンとして横並びにするため */
+            padding: 10px 15px;
+            font-size: 16px;
+            text-decoration: none; /* 下線を削除 */
+            color: white;
+            background-color: #28a745; /* 緑系の色 */
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin: 0 5px; /* ボタン間の余白 */
+        }
+        .link-button:hover {
+            background-color: #218838;
+        }
+        .link-buttons-container { /* リンクボタンを囲むコンテナ */
+            display: flex;
+            justify-content: center; /* ボタンを中央揃えにする */
+            margin-top: 10px; /* 他のコントロールとの間に余白 */
+            margin-bottom: 20px; /* 画像コンテナとの間に余白 */
+        }
         #outputUrl {
             width: 300px;
             padding: 8px;
@@ -153,6 +173,12 @@
             <input type="checkbox" id="toggleOriginalChar" checked>
             <label for="toggleOriginalChar">元の文字を表示</label>
         </div>
+    </div>
+
+    <div class="link-buttons-container">
+        <a href="alphabet_viewer.html?text=9-6%2B2%3D11111%0A8%C3%973%3D222222%0A47-26%3D73" class="link-button">P.3</a>
+        <a href="alphabet_viewer.html?text=There%20is%20power%20here%0ADeep%20beneath%20the%0Asurface%2C%20a%20source%0Aexists.%20we%20have%20built%0Athree%20research%0Afacilities%20so%20far%2C%0Aput%20if%20my%20colleagues%0Aget%20their%20way%2C%20we%20will%0Acome%20away%20with%20zero.%0Athey%20just%20are%20not%0Aable%20to%20see%20my%20vision.%0Athis%20could%20change%0Aeverything%2C%20but%20some%0Aare%20quick%20to%20fear%0Awe%20need%20double%20the%0Aresearch." class="link-button">P.4-5 EN</a>
+        <a href="alphabet_viewer.html?text=%E3%81%93%E3%81%93%E3%80%80%E3%81%AB%E3%80%80%E3%81%A1%E3%81%8B%E3%82%89%0Akoko%20ni%20chikara%0A%E3%81%82%E3%82%8A%E3%80%82%0Aari.%0A%E5%9C%B0%E4%B8%AD%E3%80%80%E6%B7%B1%E3%81%8F%0Achichuu%20fukaku%0A%E3%81%AB%E3%80%80%E6%BA%90%E6%B3%89%E3%80%80%E3%81%82%E3%82%8A%E3%80%82%0Ani%20gensen%20ari.%0A%E3%82%82%E3%81%A3%E3%81%8B%E3%80%80%E6%88%91%E3%82%89%E3%80%80%E3%81%AF%0Amokka%20warera%20wa%0A%EF%BC%93%E3%81%A4%E3%80%80%E3%81%AE%0Amittsu%20no%0A%E7%A0%94%E7%A9%B6%E5%AE%A4%E3%80%80%E3%82%92%0Akenkyuusisetsu%20wo%0A%E5%BB%BA%E3%81%A6%E3%81%9F%E3%80%82%E5%90%8C%E5%83%9A%E3%82%89%0Atateta.%20douryoura%0A%E3%81%AE%E3%80%80%E6%80%9D%E6%83%91%E3%80%80%E9%80%9A%E3%82%8A%E3%80%80%E3%81%AB%0Ano%20omowaku%20douri%20ni%0A%E3%81%AA%E3%82%89%E3%81%B0%E3%80%80%E3%82%BC%E3%83%AD%E3%80%80%E3%81%A8%0Anaraba%20zero%20to%0A%E3%81%AA%E3%82%8B%0Anaru.%0A%0A%E5%A5%B4%E3%82%89%E3%80%80%E3%81%AB%E3%81%AF%0Ayatsura%20niwa%0A%E7%A7%81%0Awatashi%0A%E3%81%AE%E3%80%80%E5%B1%95%E6%9C%9B%E3%80%80%E3%81%8C%E3%80%80%E8%A6%8B%E3%81%88%E3%81%AC%0Ano%20tenbou%20ga%20mienu%0A%E3%81%AE%E3%81%A0%E3%80%82%E5%85%A8%E3%81%A6%E3%80%80%E3%81%8C%0Anoda.%20subete%20ga%0A%E5%A4%89%E3%82%8F%E3%81%A3%E3%81%A6%E3%80%80%E3%81%97%E3%81%BE%E3%81%86%0Akawatte%20shimau%0A%E5%8F%AF%E8%83%BD%E6%80%A7%E3%80%80%E3%82%82%E3%80%80%E3%81%82%E3%82%8B%0Akanousei%20mo%20aru%0A%E3%81%8C%E3%80%81%0Aga%2C%0A%E6%81%90%E3%82%8C%E3%82%8B%E3%80%80%E3%81%AB%E3%81%AF%0Aosoreru%20niwa%0A%E6%97%A9%E3%81%99%E3%81%8E%E3%82%8B%E3%80%82%0Ahayasugiru.%0A%E6%88%91%E3%82%89%0Awarera%0A%E3%81%AB%E3%81%AF%E3%80%80%EF%BC%92%E5%80%8D%E3%80%80%E3%81%AE%0Aniwa%20nibai%20no%0A%E6%96%BD%E8%A8%AD%0Ashisetsu%0A%E3%81%8C%E3%80%80%E5%BF%85%E8%A6%81%0Aga%20hitsuyou%0A%E3%81%AA%E3%81%AE%E3%81%A0%E3%80%82%0Ananoda." class="link-button">P.4-5 JP</a>
     </div>
 
     <div id="imageContainer">
