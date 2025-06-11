@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>古代文字変換ツール</title>
+    <style>
+        /* フォントの読み込み */
+        @font-face {
+            font-family: 'FrosthavenAncientAlphabet';
+            src: url('font/Frosthavenancientalphabet-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        #inputText {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        #outputArea {
+            border: 1px dashed #aaa;
+            padding: 15px;
+            min-height: 100px;
+            background-color: #e9e9e9;
+            border-radius: 4px;
+            font-size: 24px;
+            color: #333;
+            font-family: 'FrosthavenAncientAlphabet', sans-serif;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>古代文字変換ツール</h1>
+
+        <label for="inputText">ここにテキストを入力してください:</label>
+        <textarea id="inputText" rows="17">There is power here
+Deep beneath the
+surface, a source
+exists. we have built
+three research
+facilities so far,
+put if my colleagues
+get their way, we will
+come away with zero.
+they just are not
+able to see my vision.
+this could change
+everything, but some
+are quick to fear
+we need double the
+research.</textarea>
+
+        <p><strong>出力領域:</strong></p>
+        <div id="outputArea">
+            </div>
+    </div>
+
+    <script>
+        const inputText = document.getElementById('inputText');
+        const outputArea = document.getElementById('outputArea');
+
+        // 改行を <br> タグに変換し、特殊文字をエスケープする関数
+        function formatOutput(text) {
+            let escapedText = text.replace(/&/g, '&amp;')
+                                  .replace(/</g, '&lt;')
+                                  .replace(/>/g, '&gt;')
+                                  .replace(/"/g, '&quot;')
+                                  .replace(/'/g, '&#039;');
+            return escapedText.replace(/\n/g, '<br>');
+        }
+
+        // 入力ボックスの内容が変更されるたびに出力領域を更新
+        inputText.addEventListener('input', () => {
+            outputArea.innerHTML = formatOutput(inputText.value);
+        });
+
+        // ページ読み込み時にデフォルトテキストを出力領域に反映
+        outputArea.innerHTML = formatOutput(inputText.value);
+    </script>
+</body>
+</html>
