@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>古代文字変換ツール</title>
+    <title>Frosthaven古代文字フォント</title>
     <style>
         /* フォントの読み込み */
         @font-face {
@@ -34,6 +34,32 @@
             color: #333;
             margin-bottom: 20px;
         }
+
+        .font-info {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #e0f7fa; /* Light blue background */
+            border: 1px solid #b2ebf2; /* Light blue border */
+            border-radius: 5px;
+        }
+
+        .font-info p {
+            margin: 5px 0;
+            color: #00796b; /* Dark cyan text */
+            font-weight: bold;
+        }
+
+        .font-info a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .font-info a:hover {
+            text-decoration: underline;
+        }
+
 
         label {
             display: block;
@@ -68,7 +94,12 @@
 </head>
 <body>
     <div class="container">
-        <h1>古代文字変換ツール</h1>
+        <h1>Frosthaven古代文字フォント</h1>
+
+        <div class="font-info">
+            <p>使用フォントのダウンロードはこちら: <a href="font/Frosthavenancientalphabet-Regular.ttf" download>Frosthavenancientalphabet-Regular.ttf</a></p>
+            <p>※数字無し。アルファベットのみ。</p>
+        </div>
 
         <label for="inputText">ここにテキストを入力してください:</label>
         <textarea id="inputText" rows="17">There is power here
@@ -88,7 +119,7 @@ are quick to fear
 we need double the
 research.</textarea>
 
-        <p><strong>出力領域:</strong></p>
+        <p><strong>出力</strong></p>
         <div id="outputArea">
             </div>
     </div>
