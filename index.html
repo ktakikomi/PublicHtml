@@ -87,11 +87,6 @@
             </div>
 
         <div class="item">
-            <h2><a href="test1.html">コマンドテスト</a></h2>
-            <p>JavaScriptテストとか。</p>
-        </div>
-
-        <div class="item">
             <h2><a href="alphabet_viewer.html">古代文字変換ツール</a></h2>
             <span class="spoiler-warning">※FrostHavenのネタバレを含みます。</span>
             <p>
@@ -109,6 +104,11 @@
             </p>
         </div>
 
+        <div class="item">
+            <h2><a href="test1.html">コマンドテスト</a></h2>
+            <p>JavaScriptテストとか。</p>
+        </div>
+
     </div>
 
     <script>
@@ -118,15 +118,15 @@
             const protocol = window.location.protocol;
             const protocolInfoElement = document.getElementById('protocol-info');
 
-            let displayText = '現在のプロトコル: ';
+            let displayText = '';
             if (protocol === 'file:') {
                 displayText += '<span style="color: red; font-weight: bold;">file:// (ローカルファイル)</span>';
             } else if (protocol === 'https:') {
-                displayText += '<span style="color: green; font-weight: bold;">https:// (安全なウェブ)</span>';
+                //displayText += '<span style="color: green; font-weight: bold;">https:// (安全なウェブ)</span>';
             } else if (protocol === 'http:') {
-                displayText += '<span style="color: orange; font-weight: bold;">http:// (安全ではないウェブ)</span>';
+                //displayText += '<span style="color: orange; font-weight: bold;">http:// (安全ではないウェブ)</span>';
             } else {
-                displayText += protocol + '<span style="color: blue; font-weight: bold;"> (その他)</span>';
+                //displayText += protocol + '<span style="color: blue; font-weight: bold;"> (その他)</span>';
             }
 
             protocolInfoElement.innerHTML = displayText;
